@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
+import ArticleList from "./ArticleList";
+import ArticleDetail from "./ArticleDetail";
+import Navbar from "./Navbar"; // Importa il componente Navbar
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        {/* Navbar */}
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<ArticleList />} />
+          <Route path="/article/:id" element={<ArticleDetailWrapper />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
+
+const ArticleDetailWrapper: React.FC = () => {
+  const { id } = useParams<{ id?: string }>(); // Aggiunto '?' per indicare che id è opzionale
+  return id ? <ArticleDetail id={id} /> : <div>No ID provided</div>; // Controlla se id è definito prima di utilizzarlo
+};
 
 export default App;
